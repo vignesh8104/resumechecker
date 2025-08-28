@@ -58,6 +58,6 @@ mongodb+srv://<USER>:<URL_ENCODED_PASSWORD>@<CLUSTER>.mongodb.net/mini_ats?retry
 - `GET /api/stats`
 - Client: React, Vite, TailwindCSS, Axios, `@hello-pangea/dnd`, Recharts, `socket.io-client`
 - Server: Express, Mongoose, Socket.IO, CORS, Morgan, Dotenv
-Link to demo video: https://drive.google.com/file/d/1duJUcd1O5uLZqcx_XXts-7E-C2xMkeTK/view?usp=sharing
+Link to demo video: https://drive.google.com/file/d/1lv4upkg5mAza6Lp7hqejtA5dZM59QRD2/view?usp=drive_link
 - Configure CORS origin and keep secrets in environment variables for production.
 - Optional enhancements: file upload/preview (S3 + `react-pdf`), authentication (JWT), export analytics as PNG/PDF, dark mode.
