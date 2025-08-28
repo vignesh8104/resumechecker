@@ -1,0 +1,63 @@
+# Mini Applicant Tracking System (ATS)
+
+Full‑stack mini ATS that lets recruiters track applications on a Kanban board and view analytics. Built with React + Vite on the frontend and Express + MongoDB on the backend. Real‑time updates via Socket.IO.
+
+- **Client** (`client/`): React 18 + Vite + TailwindCSS
+  - Components: `KanbanBoard`, `CandidateForm`, `Filters`, `Dashboard`
+  - Services: `src/services/api.js` uses Axios with `VITE_API_URL`
+- **Server** (`server/`): Node.js + Express + Mongoose + Socket.IO
+  - Routes: `routes/candidates.js`, `routes/stats.js`
+  - Model: `models/Candidate.js`
+  - Startup: `index.js` (reads `MONGO_URI`, starts on port 5000)
+- **Realtime**: server emits Socket.IO events; client subscribes to update boards/charts when data changes.
+
+Collection: `candidates`
+```
+Candidate {
+  name: String,                 // candidate full name
+  role: String,                 // e.g., Frontend Developer
+  experienceYears: Number,      // integer years of experience
+  resumeUrl: String,            // link to resume
+  stage: String                 // Applied | Interview | Offer | Rejected
+}
+```
+
+- Kanban board: move candidates across stages (Applied → Interview → Offer → Rejected) with drag & drop.
+- Add new candidates; filter/search by name, role, stage, and experience range.
+- Analytics dashboard: stage counts (pie), role breakdown (bar), average experience (stat card).
+- Live updates to board and charts when data changes.
+- Node.js 18+ and npm
+- MongoDB (Atlas cluster or local MongoDB)
+1) Server
+```
+cd server
+npm install
+npm run seed    
+npm run dev     
+```
+2) Client
+```
+cd client
+npm install
+echo VITE_API_URL=http://localhost:5000 > .env
+npm run dev     # http://localhost:5173
+```
+1) In Atlas Project → Security:
+   - Network Access: Add your IP (Allow access from current IP)
+   - Database Access: Create a user (read/write). Copy the password.
+2) Build a SRV connection string with a DB name:
+```
+mongodb+srv://<USER>:<URL_ENCODED_PASSWORD>@<CLUSTER>.mongodb.net/mini_ats?retryWrites=true&w=majority
+```
+3) Put it in `server/.env` as `MONGO_URI=...` and start the server.
+- `GET /api/candidates` (filters: `q`, `role`, `stage`, `minExp`, `maxExp`)
+- `POST /api/candidates`
+- `PUT /api/candidates/:id`
+- `PATCH /api/candidates/:id/stage`  with body `{ stage }`
+- `DELETE /api/candidates/:id`
+- `GET /api/stats`
+- Client: React, Vite, TailwindCSS, Axios, `@hello-pangea/dnd`, Recharts, `socket.io-client`
+- Server: Express, Mongoose, Socket.IO, CORS, Morgan, Dotenv
+Link to demo video: https://drive.google.com/file/d/1duJUcd1O5uLZqcx_XXts-7E-C2xMkeTK/view?usp=sharing
+- Configure CORS origin and keep secrets in environment variables for production.
+- Optional enhancements: file upload/preview (S3 + `react-pdf`), authentication (JWT), export analytics as PNG/PDF, dark mode.
